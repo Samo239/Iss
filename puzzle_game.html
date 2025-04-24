@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+    <meta charset="UTF-8">
+    <title>Փազլ Խաղ</title>
+    <style>
+        body {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f0f0f0;
+            font-family: sans-serif;
+        }
+        .puzzle {
+            display: grid;
+            grid-template-columns: repeat(4, auto);
+            gap: 2px;
+        }
+        .piece {
+            width: 163px;
+            height: 252px;
+            background-size: 654px 1011px;
+            cursor: move;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="width:100%;text-align:center;">Փազլ Խաղ՝ հավաքիր նկարը</h2>
+    <div class="puzzle" id="puzzle">
+    </div>
+    <script>
+        const pieces = ['piece_3_3.jpg', 'piece_1_0.jpg', 'piece_0_2.jpg', 'piece_2_3.jpg', 'piece_1_3.jpg', 'piece_3_0.jpg', 'piece_1_2.jpg', 'piece_2_0.jpg', 'piece_3_2.jpg', 'piece_0_3.jpg', 'piece_2_2.jpg', 'piece_1_1.jpg', 'piece_0_0.jpg', 'piece_0_1.jpg', 'piece_2_1.jpg', 'piece_3_1.jpg'];
+        const puzzle = document.getElementById('puzzle');
+
+        pieces.forEach(name => {
+            const div = document.createElement('div');
+            div.className = 'piece';
+            div.style.backgroundImage = `url('puzzle_pieces/${name}')`;
+            div.setAttribute('draggable', true);
+            div.addEventListener('dragstart', e => {
+                e.dataTransfer.setData('text/plain', e.target.style.backgroundImage);
+            });
+            div.addEventListener('dragover', e => e.preventDefault());
+            div.addEventListener('drop', e => {
+                e.preventDefault();
+                const from = e.dataTransfer.getData('text/plain');
+                const to = e.target.style.backgroundImage;
+                e.target.style.backgroundImage = from;
+                document.querySelector(`[style*="${from}"]`).style.backgroundImage = to;
+            });
+            puzzle.appendChild(div);
+        });
+    </script>
+</body>
+</html>
